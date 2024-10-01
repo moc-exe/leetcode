@@ -45,12 +45,23 @@ public class M1497_CanArrange {
      
         int[] pairs = new int[k];
 
-        for (int i = 0; i < pairs.length; i++) {
+        for (int i = 0; i < arr.length; i++) {
             
             var result = (arr[i] % k + k) % k;
             pairs[result]++;
-
         }
+
+        for (int i = 0; i < pairs.length; i++) {
+            
+            if(i == 0 | i == k - i){
+                if (pairs[i] % 2 != 0){return false;}
+            }
+            else{
+                if (pairs[i] != pairs[k - i]){return false;}
+            }
+        }
+
+        return true;
         
 
     }
