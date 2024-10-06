@@ -51,11 +51,12 @@ public class M1813_SentenceSimilarityIII{
         var deq1 = new ArrayDeque<String>(Arrays.asList(s1));
         var deq2 = new ArrayDeque<String>(Arrays.asList(s2));
 
-        while(deq1.peekFirst().equals(deq2.peekFirst())){
+        while(!deq1.isEmpty() && !deq2.isEmpty() && deq1.peekFirst().equals(deq2.peekFirst())){
             deq1.pollFirst();
             deq2.pollFirst();
         }
-        while(deq1.peekLast().equals(deq2.peekLast())){
+
+        while(!deq1.isEmpty() && !deq2.isEmpty() && deq1.peekLast().equals(deq2.peekLast())){
 
             deq1.pollLast();
             deq2.pollLast();
@@ -63,10 +64,6 @@ public class M1813_SentenceSimilarityIII{
         }
 
         return (deq1.isEmpty() || deq2.isEmpty()) ? true : false;
-        
-
-        
-
 
     }
 
