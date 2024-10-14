@@ -62,8 +62,7 @@ public class M1497_CanArrange {
         }
 
         return true;
-        
 
-    }
- 
+        
+     }
 }
