@@ -118,3 +118,53 @@ SELECT
     END AS confirmation_rate
 FROM Signups Sig
 LEFT JOIN UserRates ON Sig.user_id = UserRates.user_id
+
+
+-- #15 https://leetcode.com/problems/not-boring-movies/description/?envType=study-plan-v2&envId=top-sql-50
+
+SELECT id, movie, description, rating 
+FROM Cinema
+WHERE id % 2 = 1 AND description <> 'boring'
+ORDER BY rating DESC
+
+-- #16 https://leetcode.com/problems/average-selling-price/description/?envType=study-plan-v2&envId=top-sql-50
+
+SELECT P.product_id, 
+    ROUND(
+        CASE 
+            WHEN SUM(U.units) = 0 OR SUM(U.units) IS NULL THEN 0 
+            ELSE SUM(P.price * U.units) / SUM(U.units)
+        END, 
+        2
+    ) AS average_price
+FROM Prices P
+INNER JOIN UnitsSold U ON P.product_id = U.product_id
+WHERE U.purchase_date BETWEEN P.start_date AND P.end_date
+GROUP BY P.product_id
+
+
+-- #17 https://leetcode.com/problems/project-employees-i/description/?envType=study-plan-v2&envId=top-sql-50
+
+SELECT P.project_id, ROUND(AVG(E.experience_years),2) as average_years
+FROM Project P
+INNER JOIN Employee E ON P.employee_id = E.employee_id
+GROUP BY P.project_id
+
+-- #18 https://leetcode.com/problems/percentage-of-users-attended-a-contest/description/?envType=study-plan-v2&envId=top-sql-50
+
+SELECT 
+    R.contest_id,
+    ROUND(COUNT(U.user_id) / (SELECT COUNT(*) FROM Users) * 100, 2) as percentage
+FROM Users U
+INNER JOIN Register R ON U.user_id = R.user_id
+GROUP BY R.contest_id
+ORDER BY percentage DESC, contest_id ASC
+
+-- #19 https://leetcode.com/problems/queries-quality-and-percentage/?envType=study-plan-v2&envId=top-sql-50
+
+SELECT
+    query_name,
+    ROUND(AVG(rating / position),2) as quality,
+    ROUND( (SELECT COUNT(*) FROM Queries Q3 WHERE Q3.query_name = Q1.query_name AND Q3.rating < 3) / (SELECT COUNT(*) FROM Queries Q2 WHERE Q2.query_name = Q1.query_name) * 100 , 2) as poor_query_percentage
+FROM Queries Q1
+GROUP BY query_name
