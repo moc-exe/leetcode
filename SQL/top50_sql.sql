@@ -87,4 +87,34 @@ FROM(
     HAVING COUNT(E.id) >= 5
 ) AS E1
 INNER JOIN Employee E2 on E1.managerId = E2.id
-    
+
+
+-- #14 https://leetcode.com/problems/confirmation-rate/description/?envType=study-plan-v2&envId=top-sql-50
+
+WITH UserRates AS (
+    SELECT U1.user_id, ROUND(U2.successful_confirmations / U1.total_confirmations, 2) as rate
+    FROM(
+
+        SELECT S.user_id, COUNT(*) AS total_confirmations
+        FROM Signups S
+        INNER JOIN Confirmations C ON S.user_id = C.user_id
+        GROUP BY S.user_id
+    ) AS U1
+    INNER JOIN(
+
+        SELECT S.user_id, COUNT(*) AS successful_confirmations
+        FROM Signups S
+        INNER JOIN Confirmations C ON S.user_id = C.user_id
+        WHERE C.action = 'confirmed'
+        GROUP BY S.user_id
+
+    ) AS U2 ON U1.user_id = U2.user_id
+)
+SELECT 
+    Sig.user_id,
+    CASE
+        WHEN UserRates.user_id IS NULL THEN 0
+        ELSE UserRates.rate
+    END AS confirmation_rate
+FROM Signups Sig
+LEFT JOIN UserRates ON Sig.user_id = UserRates.user_id
