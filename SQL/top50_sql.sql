@@ -355,3 +355,29 @@ FROM (
     FROM Logs
 ) Sub
 WHERE num = prev_num AND num = next_num;
+
+-- #34 https://leetcode.com/problems/product-price-at-a-given-date/?envType=study-plan-v2&envId=top-sql-50
+
+WITH MostRecentUpdate AS (
+    SELECT
+        product_id, 
+        MAX(change_date) AS change_date
+    FROM Products
+    WHERE change_date <= '2019-08-16'
+    GROUP BY product_id
+)
+SELECT 
+    DISTINCT P1.product_id AS product_id,
+    CASE
+        WHEN P1.product_id IN (SELECT product_id FROM MostRecentUpdate) THEN (
+            SELECT P2.new_price
+            FROM Products P2
+            INNER JOIN MostRecentUpdate MRU
+            ON P2.change_date = MRU.change_date 
+            AND P2.product_id = MRU.product_id
+            WHERE MRU.product_id = P1.product_id
+            LIMIT 1
+        )
+        ELSE 10
+    END AS price
+FROM Products P1;
