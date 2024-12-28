@@ -292,3 +292,66 @@ from (
     having count(num)=1
 ) as a
 */
+
+-- #29 https://leetcode.com/problems/customers-who-bought-all-products/description/?envType=study-plan-v2&envId=top-sql-50
+
+SELECT
+    customer_id 
+FROM Customer
+GROUP BY customer_id
+HAVING COUNT(DISTINCT product_key) = (SELECT COUNT(*) FROM Product)
+
+-- #30 https://leetcode.com/problems/the-number-of-employees-which-report-to-each-employee/description/?envType=study-plan-v2&envId=top-sql-50
+
+SELECT
+    E1.employee_id as employee_id,
+    E1.name as name,
+    E2.reports_count as reports_count,
+    E2.age as average_age
+
+FROM Employees E1
+INNER JOIN (
+    SELECT
+        reports_to as global_id,
+        COUNT(DISTINCT employee_id) as reports_count,
+        ROUND(AVG(age)) as age
+    FROM Employees
+    GROUP BY reports_to 
+    HAVING COUNT(DISTINCT employee_id) > 0 
+) AS E2 ON E1.employee_id = E2.global_id
+ORDER BY E1.employee_id
+
+-- #31 https://leetcode.com/problems/primary-department-for-each-employee/description/?envType=study-plan-v2&envId=top-sql-50
+
+SELECT
+    E1.employee_id as employee_id, 
+    (
+    CASE
+        WHEN COUNT(DISTINCT E1.department_id) > 1 THEN (SELECT E2.department_id FROM Employee E2 WHERE E2.employee_id = E1.employee_id AND E2.primary_flag = 'Y')
+        ELSE E1.department_id
+        END
+    ) as department_id
+FROM Employee E1
+GROUP BY E1.employee_id
+
+
+-- #32 https://leetcode.com/problems/triangle-judgement/description/?envType=study-plan-v2&envId=top-sql-50
+
+SELECT
+    x, y, z, 
+    CASE WHEN (x + y > z AND y + z > x AND x + z > y) THEN 'Yes'
+    ELSE 'No'
+    END as triangle 
+FROM Triangle
+
+-- #33 https://leetcode.com/problems/consecutive-numbers/description/?envType=study-plan-v2&envId=top-sql-50
+
+SELECT DISTINCT num AS ConsecutiveNums
+FROM (
+    SELECT 
+        num,
+        LAG(num) OVER (ORDER BY id) AS prev_num,
+        LEAD(num) OVER (ORDER BY id) AS next_num
+    FROM Logs
+) Sub
+WHERE num = prev_num AND num = next_num;
