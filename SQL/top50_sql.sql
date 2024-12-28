@@ -168,3 +168,127 @@ SELECT
     ROUND( (SELECT COUNT(*) FROM Queries Q3 WHERE Q3.query_name = Q1.query_name AND Q3.rating < 3) / (SELECT COUNT(*) FROM Queries Q2 WHERE Q2.query_name = Q1.query_name) * 100 , 2) as poor_query_percentage
 FROM Queries Q1
 GROUP BY query_name
+
+
+-- #20 https://leetcode.com/problems/monthly-transactions-i/?envType=study-plan-v2&envId=top-sql-50
+
+SELECT
+    DATE_FORMAT(trans_date, '%Y-%m') AS month,
+    country,
+    COUNT(*) as trans_count,
+    SUM(CASE WHEN state = 'approved' THEN 1 ELSE 0 END) as approved_count,
+    SUM(amount) as trans_total_amount,
+    SUM(CASE WHEN state = 'approved' THEN amount ELSE 0 END) as approved_total_amount
+FROM Transactions
+GROUP BY DATE_FORMAT(trans_date, '%Y-%m'), country
+
+-- #21 https://leetcode.com/problems/immediate-food-delivery-ii/description/?envType=study-plan-v2&envId=top-sql-50
+
+WITH Orderings AS(
+
+    SELECT
+        customer_id,
+        (CASE WHEN MIN(order_date) = MIN(customer_pref_delivery_date) THEN 1 ELSE 0 END) as immediate
+
+    FROM Delivery
+    GROUP BY customer_id
+
+)
+SELECT ROUND(SUM(immediate) / COUNT(*) * 100, 2) as immediate_percentage
+FROM Orderings
+
+
+-- #22 https://leetcode.com/problems/game-play-analysis-iv/description/?envType=study-plan-v2&envId=top-sql-50
+
+WITH PlayerStats AS(
+
+    SELECT
+        A1.player_id, 
+        (CASE 
+            WHEN MIN(event_date) + INTERVAL 1 DAY IN (SELECT event_date FROM Activity A2 WHERE A2.player_id = A1.player_id) THEN 1
+            ELSE 0
+            END
+        ) AS next_day
+    FROM Activity A1
+    GROUP BY A1.player_id
+
+)
+SELECT ROUND(SUM(next_day) / COUNT(*), 2) as fraction
+FROM PlayerStats
+
+-- #23 https://leetcode.com/problems/number-of-unique-subjects-taught-by-each-teacher/description/?envType=study-plan-v2&envId=top-sql-50
+
+SELECT
+    teacher_id,
+    COUNT(DISTINCT subject_id) as cnt
+FROM Teacher
+GROUP BY teacher_id
+
+-- #24 https://leetcode.com/problems/user-activity-for-the-past-30-days-i/description/?envType=study-plan-v2&envId=top-sql-50
+
+
+SELECT
+    activity_date as day, 
+    COUNT(DISTINCT user_id) as active_users
+FROM Activity 
+WHERE activity_date BETWEEN '2019-06-28' AND '2019-07-27'
+GROUP BY activity_date
+
+-- #25 https://leetcode.com/problems/product-sales-analysis-iii/description/?envType=study-plan-v2&envId=top-sql-50
+
+WITH Stats AS(
+    SELECT
+        product_id, 
+        MIN(year) as first_year
+    FROM Sales
+    GROUP BY product_id
+)
+SELECT
+    Sales.product_id as product_id, 
+    Stats.first_year as first_year,
+    Sales.quantity as quantity,
+    Sales.price as price
+FROM Sales
+INNER JOIN Stats ON Sales.product_id = Stats.product_id AND Sales.year = Stats.first_year
+
+
+-- #26 https://leetcode.com/problems/classes-more-than-5-students/description/?envType=study-plan-v2&envId=top-sql-50
+
+SELECT
+    class
+FROM Courses
+GROUP BY class
+HAVING COUNT(DISTINCT student) >= 5
+
+-- #27 https://leetcode.com/problems/find-followers-count/description/?envType=study-plan-v2&envId=top-sql-50
+
+SELECT
+    user_id,
+    COUNT(DISTINCT follower_id) as followers_count
+FROM Followers
+GROUP BY user_id
+
+-- #28 https://leetcode.com/problems/biggest-single-number/description/?envType=study-plan-v2&envId=top-sql-50
+
+WITH Nums AS(
+    SELECT MAX(num) as number
+    FROM MyNumbers
+    GROUP BY num
+    HAVING COUNT(*) = 1
+)
+SELECT 
+    CASE WHEN EXISTS (SELECT number FROM Nums) THEN (SELECT MAX(number) FROM Nums)
+    ELSE NULL
+    END AS num
+
+
+
+-- LMAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+/*
+select max(num) as num
+from (
+    select num from MyNumbers
+    group by num
+    having count(num)=1
+) as a
+*/
