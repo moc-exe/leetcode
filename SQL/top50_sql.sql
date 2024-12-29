@@ -429,3 +429,105 @@ FROM Seat
 ORDER BY id
 
 -- #39 https://leetcode.com/problems/movie-rating/description/?envType=study-plan-v2&envId=top-sql-50
+
+
+(
+    SELECT U.name AS results
+    FROM Users U
+    INNER JOIN MovieRating MR ON U.user_id = MR.user_id
+    GROUP BY U.user_id, U.name
+    ORDER BY COUNT(*) DESC, U.name ASC
+    LIMIT 1
+)
+UNION ALL
+(
+    SELECT M.title AS results
+    FROM MovieRating MR
+    INNER JOIN Movies M ON MR.movie_id = M.movie_id
+    WHERE YEAR(MR.created_at) = 2020 and MONTH(MR.created_at) = 2
+    GROUP BY M.movie_id, M.title
+    ORDER BY AVG(MR.rating) DESC, M.title ASC
+    LIMIT 1
+);
+
+-- #40 https://leetcode.com/problems/restaurant-growth/description/?envType=study-plan-v2&envId=top-sql-50
+
+
+-- couldn't solve this bs lmaooo, maybe later 
+
+
+-- #41 https://leetcode.com/problems/friend-requests-ii-who-has-the-most-friends/?envType=study-plan-v2&envId=top-sql-50
+
+-- WITH RequesterStats AS(    
+--     SELECT 
+--     requester_id as id,
+--     COUNT(*) as count
+--     FROM RequestAccepted
+--     GROUP BY requester_id
+-- ),
+-- AccepterStats AS(
+--     SELECT 
+--     accepter_id as id,
+--     COUNT(*) as count
+--     FROM RequestAccepted
+--     GROUP BY accepter_id
+-- )
+SELECT
+    id,
+    SUM(count) as num
+FROM(
+
+    SELECT 
+    requester_id as id,
+    COUNT(*) as count
+    FROM RequestAccepted
+    GROUP BY requester_id
+
+    UNION ALL
+
+    SELECT 
+    accepter_id as id,
+    COUNT(*) as count
+    FROM RequestAccepted
+    GROUP BY accepter_id
+    
+) As Stats
+GROUP BY id
+ORDER BY num DESC
+LIMIT 1
+
+-- #42 https://leetcode.com/problems/investments-in-2016/description/?envType=study-plan-v2&envId=top-sql-50
+
+
+SELECT ROUND(SUM(I1.tiv_2016),2) as tiv_2016
+FROM Insurance I1
+WHERE
+    (I1.lat, I1.lon) NOT IN (SELECT I2.lat, I2.lon FROM Insurance I2 WHERE I2.pid <> I1.pid)
+    AND I1.tiv_2015 IN (SELECT I4.tiv_2015 FROM Insurance I4 WHERE I4.pid <> I1.pid)
+
+-- #43 https://leetcode.com/problems/department-top-three-salaries/description/?envType=study-plan-v2&envId=top-sql-50
+
+
+WITH RankedSalaries AS(
+
+    SELECT
+        Employee.id as e_id,
+        Employee.name as e_name,
+        salary,
+        Employee.departmentId as d_id,
+        Department.name as d_name,
+        DENSE_RANK() OVER (
+            PARTITION BY departmentId 
+            ORDER BY salary DESC
+            ) as salary_rank
+    FROM Employee
+    INNER JOIN Department ON Employee.departmentId = Department.id
+
+)
+SELECT
+    d_name as Department,
+    e_name as Employee,
+    salary as Salary
+FROM RankedSalaries
+WHERE salary_rank <= 3
+
