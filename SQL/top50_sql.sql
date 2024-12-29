@@ -381,3 +381,51 @@ SELECT
         ELSE 10
     END AS price
 FROM Products P1;
+
+-- #35 https://leetcode.com/problems/last-person-to-fit-in-the-bus/?envType=study-plan-v2&envId=top-sql-50
+
+WITH RunningSum AS(
+
+    SELECT 
+        person_name,
+        SUM(weight) OVER (ORDER BY turn) as cumulative_weight
+    FROM Queue
+)
+SELECT person_name
+FROM RunningSum
+WHERE cumulative_weight <= 1000
+ORDER BY cumulative_weight DESC
+LIMIT 1
+
+
+-- #36 https://leetcode.com/problems/count-salary-categories/description/?envType=study-plan-v2&envId=top-sql-50
+
+SELECT 'Low Salary' AS category, COUNT(*) as accounts_count FROM Accounts WHERE income < 20000
+UNION
+SELECT 'Average Salary' AS category, COUNT(*) as accounts_count FROM Accounts WHERE income >= 20000 AND income <= 50000
+UNION
+SELECT 'High Salary' AS category, COUNT(*) as accounts_count FROM Accounts WHERE income > 50000
+
+
+-- #37 https://leetcode.com/problems/employees-whose-manager-left-the-company/description/?envType=study-plan-v2&envId=top-sql-50
+
+SELECT employee_id
+FROM Employees E
+WHERE E.manager_id NOT IN (SELECT employee_id FROM Employees) AND E.salary < 30000
+ORDER BY employee_id
+
+-- #38 https://leetcode.com/problems/exchange-seats/description/?envType=study-plan-v2&envId=top-sql-50
+
+SELECT
+    (CASE
+        WHEN id % 2 = 0 THEN id - 1
+        WHEN id = (SELECT COUNT(*) FROM Seat) THEN id
+        ELSE id + 1
+    END
+    ) AS id,
+    student
+
+FROM Seat
+ORDER BY id
+
+-- #39 https://leetcode.com/problems/movie-rating/description/?envType=study-plan-v2&envId=top-sql-50
