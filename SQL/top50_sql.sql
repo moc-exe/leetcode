@@ -531,3 +531,66 @@ SELECT
 FROM RankedSalaries
 WHERE salary_rank <= 3
 
+-- #44 https://leetcode.com/problems/fix-names-in-a-table/description/?envType=study-plan-v2&envId=top-sql-50
+
+SELECT
+    U.user_id as user_id,
+    CONCAT(UPPER(SUBSTRING(U.name, 1, 1)), LOWER(SUBSTRING(U.name, 2))) as name
+FROM Users U
+ORDER BY user_id
+
+-- #45 https://leetcode.com/problems/patients-with-a-condition/description/?envType=study-plan-v2&envId=top-sql-50
+SELECT
+    patient_id,
+    patient_name, 
+    conditions
+FROM Patients
+WHERE 
+    conditions LIKE '% DIAB1%' OR
+    conditions LIKE 'DIAB1%'
+
+-- #46 https://leetcode.com/problems/delete-duplicate-emails/description/?envType=study-plan-v2&envId=top-sql-50
+
+DELETE p1
+FROM Person p1
+JOIN Person p2
+ON p1.email = p2.email AND p1.id > p2.id
+
+-- #47 https://leetcode.com/problems/second-highest-salary/description/?envType=study-plan-v2&envId=top-sql-50
+
+WITH RankedSalaries AS (
+    SELECT
+        salary,
+        DENSE_RANK() OVER (
+            ORDER BY salary DESC
+        ) AS ranking
+    FROM Employee
+)
+SELECT 
+    (
+        SELECT salary
+        FROM RankedSalaries
+        WHERE ranking = 2
+        LIMIT 1
+    ) AS SecondHighestSalary
+
+-- #48 https://leetcode.com/problems/group-sold-products-by-the-date/description/?envType=study-plan-v2&envId=top-sql-50
+
+SELECT 
+    sell_date,
+    COUNT(DISTINCT product) AS num_sold,
+    GROUP_CONCAT(DISTINCT product ORDER BY product) AS products
+FROM Activities
+GROUP BY sell_date
+ORDER BY sell_date
+
+-- #48 https://leetcode.com/problems/list-the-products-ordered-in-a-period/?envType=study-plan-v2&envId=top-sql-50
+
+SELECT
+    product_name,
+    SUM(unit) as unit
+FROM Products P
+NATURAL JOIN Orders O
+WHERE MONTH(order_date) = 2 AND YEAR(order_date) = 2020
+GROUP BY product_id, product_name
+HAVING SUM(unit) >= 100
