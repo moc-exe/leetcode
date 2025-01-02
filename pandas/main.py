@@ -67,4 +67,54 @@ def renameColumns(students: pd.DataFrame) -> pd.DataFrame:
                 }          
             )
 
-            
+
+# 10 https://leetcode.com/problems/change-data-type/description/?envType=study-plan-v2&envId=introduction-to-pandas&lang=pythondata
+
+def changeDatatype(students: pd.DataFrame) -> pd.DataFrame:
+
+    students['grade'] = students['grade'].astype(int)
+    return students
+
+# 11 https://leetcode.com/problems/change-data-type/submissions/1494537613/?envType=study-plan-v2&envId=introduction-to-pandas&lang=pythondata
+
+def fillMissingValues(products: pd.DataFrame) -> pd.DataFrame:
+
+    products['quantity'].fillna(value=0, inplace=True)
+    return products
+
+# 12 https://leetcode.com/problems/reshape-data-concatenate/description/?envType=study-plan-v2&envId=introduction-to-pandas&lang=pythondata
+
+def concatenateTables(df1: pd.DataFrame, df2: pd.DataFrame) -> pd.DataFrame:
+        
+    return pd.concat([df1,df2], join='inner')
+
+# 13 https://leetcode.com/problems/reshape-data-pivot/description/?envType=study-plan-v2&envId=introduction-to-pandas&lang=pythondata
+
+
+def pivotTable(weather: pd.DataFrame) -> pd.DataFrame:
+
+    return pd.pivot_table(
+        data=weather,
+        values='temperature',
+        index= 'month',
+        columns= ['city']
+    )
+
+# 14 https://leetcode.com/problems/reshape-data-melt/description/?envType=study-plan-v2&envId=introduction-to-pandas&lang=pythondata
+
+def meltTable(report: pd.DataFrame) -> pd.DataFrame:
+
+    return report.melt(
+        id_vars='product',
+        var_name='quarter',
+        value_vars=['quarter_1','quarter_2','quarter_3','quarter_4'],
+        value_name='sales'
+    )
+
+# 15 https://leetcode.com/problems/method-chaining/description/?envType=study-plan-v2&envId=introduction-to-pandas&lang=pythondata
+
+
+def findHeavyAnimals(animals: pd.DataFrame) -> pd.DataFrame:
+    
+    mask = animals['weight'] > 100
+    return animals.sort_values('weight', ascending=False).loc[mask, ['name']]
