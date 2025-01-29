@@ -1,3 +1,10 @@
+/*
+ * EASY 643. Maximum Average Subarray I
+ * https://leetcode.com/problems/maximum-average-subarray-i/description/?envType=study-plan-v2&envId=leetcode-75
+ * 
+ * 
+ */
+
 public class E643_MaximumAvgSubarrayI{
 
     public double findMaxAverage(int[] nums, int k) {
