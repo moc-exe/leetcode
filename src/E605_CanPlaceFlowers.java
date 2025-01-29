@@ -4,8 +4,6 @@
  * 
  */
 
-
-
 public class E605_CanPlaceFlowers {
     
     public boolean canPlaceFlowers(int[] flowerbed, int n) {

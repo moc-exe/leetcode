@@ -27,8 +27,6 @@ Constraints:
 -109 <= nums[i] <= 109
 */
 
-
-
 import java.util.HashSet;
 
 public class M128_LongestConsecutiveSequence {

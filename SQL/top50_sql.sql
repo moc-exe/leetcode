@@ -360,7 +360,7 @@ WHERE num = prev_num AND num = next_num;
 
 WITH MostRecentUpdate AS (
     SELECT
-        product_id, 
+        product_id,
         MAX(change_date) AS change_date
     FROM Products
     WHERE change_date <= '2019-08-16'
@@ -510,6 +510,7 @@ WHERE
 
 WITH RankedSalaries AS(
 
+
     SELECT
         Employee.id as e_id,
         Employee.name as e_name,
@@ -594,3 +595,11 @@ NATURAL JOIN Orders O
 WHERE MONTH(order_date) = 2 AND YEAR(order_date) = 2020
 GROUP BY product_id, product_name
 HAVING SUM(unit) >= 100
+
+-- #49 https://leetcode.com/problems/find-users-with-valid-e-mails/description/?envType=study-plan-v2&envId=top-sql-50
+
+-- needa review regex 
+
+-- #50
+    
+    

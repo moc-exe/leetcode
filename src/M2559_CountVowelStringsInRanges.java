@@ -4,8 +4,6 @@
  * 
  */
 
-
-
 public class M2559_CountVowelStringsInRanges {
 
     public int[] vowelStrings(String[] words, int[][] queries) {

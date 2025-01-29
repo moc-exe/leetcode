@@ -1,3 +1,8 @@
+/*
+ * MEDIUM 238. Product of Array Except Self
+ * https://leetcode.com/problems/product-of-array-except-self/description/?envType=study-plan-v2&envId=leetcode-75
+ */
+
 public class M238_ProductOfArrayExceptSelf {
     
     public int[] productExceptSelf(int[] nums) {
@@ -33,6 +38,7 @@ public class M238_ProductOfArrayExceptSelf {
             out[i] = left[i] * right[i];
         }
         return out;
+        
     }
 
 }

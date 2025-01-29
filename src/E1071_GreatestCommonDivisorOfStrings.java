@@ -45,7 +45,6 @@ public class E1071_GreatestCommonDivisorOfStrings {
         for (int i = 0; i < repCount; i++) {
             rep.append(t);
         }
-
         return rep.toString().equals(s);
     }
 }

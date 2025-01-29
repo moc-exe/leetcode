@@ -51,9 +51,7 @@ public class M189_RotateArray{
             k = k % nums.length;
 
         }
-
         int[] old = Arrays.copyOf(nums, nums.length);
-
         for (int i = 0; i < old.length; i++) {
             if(i < k){
                 nums[i] = old[old.length - k + i];
