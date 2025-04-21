@@ -302,3 +302,43 @@ var cancellable = function(fn, args, t){
  */
 
 
+
+// (14) 
+// 2637. Promise Time Limit
+// https://leetcode.com/problems/promise-time-limit/description/?envType=study-plan-v2&envId=30-days-of-javascript
+
+/**
+ * @param {Function} fn
+ * @param {number} t
+ * @return {Function}
+ */
+var timeLimit = function(fn, t) {
+    
+
+    
+    return async function(...args) {
+     
+        return new Promise((resolve, reject) => {
+
+            let timeoutId = setTimeout(reject, t, "Time Limit Exceeded");
+
+            let out = fn(...args)
+                .then((val) => {
+
+                    clearTimeout(timeoutId);
+                    resolve(val);
+                })
+                .catch((err) =>{
+
+                    clearTimeout(timeoutId);
+                    reject(err);
+                })
+
+        })
+    }
+};
+
+/**
+ * const limited = timeLimit((t) => new Promise(res => setTimeout(res, t)), 100);
+ * limited(150).catch(console.log) // "Time Limit Exceeded" at t=100ms
+ */
