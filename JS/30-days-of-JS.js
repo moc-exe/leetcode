@@ -342,3 +342,58 @@ var timeLimit = function(fn, t) {
  * const limited = timeLimit((t) => new Promise(res => setTimeout(res, t)), 100);
  * limited(150).catch(console.log) // "Time Limit Exceeded" at t=100ms
  */
+
+
+// (15) 
+// 2622. Cache With Time Limit
+// https://leetcode.com/problems/cache-with-time-limit/description/?envType=study-plan-v2&envId=30-days-of-javascript
+
+var TimeLimitedCache = function() {
+
+    this.hashMap = new Map();
+
+};
+
+/** 
+ * @param {number} key
+ * @param {number} value
+ * @param {number} duration time until expiration in ms
+ * @return {boolean} if un-expired key already existed
+ */
+TimeLimitedCache.prototype.set = function(key, value, duration) {
+    
+    let out = this.hashMap.has(key) ? true : false;
+    
+    if(out){
+
+        let timeoutId = this.hashMap.get(key).timeoutKey;
+        clearTimeout(timeoutId);
+        this.hashMap.set(key, {val: value, timeoutKey: setTimeout(() => this.hashMap.delete(key), duration)});
+    }   
+    else{
+        this.hashMap.set(key, {val: value, timeoutKey: setTimeout(() => this.hashMap.delete(key), duration)});
+    }
+    return out;
+};
+
+/** 
+ * @param {number} key
+ * @return {number} value associated with key
+ */
+TimeLimitedCache.prototype.get = function(key) {
+    return this.hashMap.has(key) ? this.hashMap.get(key).val : -1;
+};
+
+/** 
+ * @return {number} count of non-expired keys
+ */
+TimeLimitedCache.prototype.count = function() {
+    return this.hashMap.size;
+};
+
+/**
+ * const timeLimitedCache = new TimeLimitedCache()
+ * timeLimitedCache.set(1, 42, 1000); // false
+ * timeLimitedCache.get(1) // 42
+ * timeLimitedCache.count() // 1
+ */
