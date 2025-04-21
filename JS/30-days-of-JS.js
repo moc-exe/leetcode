@@ -397,3 +397,36 @@ TimeLimitedCache.prototype.count = function() {
  * timeLimitedCache.get(1) // 42
  * timeLimitedCache.count() // 1
  */
+
+
+// (16) 
+// 2627. Debounce
+// https://leetcode.com/problems/debounce/description/?envType=study-plan-v2&envId=30-days-of-javascript
+
+/**
+ * @param {Function} fn
+ * @param {number} t milliseconds
+ * @return {Function}
+ */
+var debounce = function(fn, t) {
+    
+    let timeoutId = null;
+
+    return function(...args){
+
+        if(timeoutId !== null){
+
+            clearTimeout(timeoutId);
+        }
+        
+        timeoutId = setTimeout(fn, t, ...args);
+        
+    }
+};
+
+/**
+ * const log = debounce(console.log, 100);
+ * log('Hello'); // cancelled
+ * log('Hello'); // cancelled
+ * log('Hello'); // Logged at t=100ms
+ */
