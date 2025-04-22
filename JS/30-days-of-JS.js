@@ -484,3 +484,37 @@ var isEmpty = function(obj) {
     }
     
 };
+
+
+// (19)
+// 2677. Chunk Array
+// https://leetcode.com/problems/chunk-array/description/?envType=study-plan-v2&envId=30-days-of-javascript
+/**
+ * @param {Array} arr
+ * @param {number} size
+ * @return {Array}
+ */
+var chunk = function(arr, size) {
+    
+    let mainArray = []
+    let counter = 0;
+    let currArray = []
+    for(var elem of arr){
+
+        counter++;
+        currArray.push(elem);
+        if(counter == size){
+
+            mainArray.push(currArray);
+            counter = 0;
+            currArray = [];
+        }
+
+    }
+
+    if (currArray.length != 0){
+        mainArray.push(currArray);
+    }
+
+    return mainArray;
+};
