@@ -518,3 +518,18 @@ var chunk = function(arr, size) {
 
     return mainArray;
 };
+
+// (20)
+// 2619. Array Prototype Last
+// https://leetcode.com/problems/array-prototype-last/description/?envType=study-plan-v2&envId=30-days-of-javascript
+/**
+ * @return {null|boolean|number|string|Array|Object}
+ */
+Array.prototype.last = function() {
+    return this.length == 0 ? -1 : this.pop();
+};
+
+/**
+ * const arr = [1, 2, 3];
+ * arr.last(); // 3
+ */
