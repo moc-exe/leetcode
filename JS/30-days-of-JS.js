@@ -466,3 +466,21 @@ var promiseAll = async function(functions) {
  * const promise = promiseAll([() => new Promise(res => res(42))])
  * promise.then(console.log); // [42]
  */
+
+// (18)
+// 2727. Is Object Empty
+// https://leetcode.com/problems/is-object-empty/?envType=study-plan-v2&envId=30-days-of-javascript
+/**
+ * @param {Object|Array} obj
+ * @return {boolean}
+ */
+var isEmpty = function(obj) {
+
+    if(Array.isArray(obj)){
+        return obj.length == 0;
+    }
+    else{
+        return Object.keys(obj).length == 0 ? true : false;
+    }
+    
+};
