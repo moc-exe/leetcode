@@ -533,3 +533,36 @@ Array.prototype.last = function() {
  * const arr = [1, 2, 3];
  * arr.last(); // 3
  */
+
+
+// (21)
+// 2631. Group By
+// https://leetcode.com/problems/group-by/?envType=study-plan-v2&envId=30-days-of-javascript
+
+/**
+ * @param {Function} fn
+ * @return {Object}
+ */
+Array.prototype.groupBy = function(fn) {
+    
+    let outObj = {};
+
+    for(let val of this.values()){
+
+        let result = fn(val);
+        
+        if(outObj.hasOwnProperty(result)){
+            outObj[result].push(val);
+        }
+        else{
+            outObj[result] = []
+            outObj[result].push(val);
+        }
+    }
+
+    return outObj;
+};
+
+/**
+ * [1,2,3].groupBy(String) // {"1":[1],"2":[2],"3":[3]}
+ */
