@@ -566,3 +566,20 @@ Array.prototype.groupBy = function(fn) {
 /**
  * [1,2,3].groupBy(String) // {"1":[1],"2":[2],"3":[3]}
  */
+
+
+// (22)
+// 2724. Sort By
+// https://leetcode.com/problems/sort-by/?envType=study-plan-v2&envId=30-days-of-javascript
+
+
+/**
+ * @param {Array} arr
+ * @param {Function} fn
+ * @return {Array}
+ */
+var sortBy = function(arr, fn) {
+
+   return arr.sort((a,b) => fn(a) - fn(b));
+
+};
