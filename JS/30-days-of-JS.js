@@ -583,3 +583,36 @@ var sortBy = function(arr, fn) {
    return arr.sort((a,b) => fn(a) - fn(b));
 
 };
+
+// (23)
+// 2722. Join Two Arrays by ID
+// https://leetcode.com/problems/join-two-arrays-by-id/description/?envType=study-plan-v2&envId=30-days-of-javascript
+
+/**
+ * @param {Array} arr1
+ * @param {Array} arr2
+ * @return {Array}
+ */
+var join = function(arr1, arr2) {
+    
+    let map = new Map(); 
+
+    for(let elem of arr1){
+        map.set(elem.id, {...elem});
+    }
+
+    for(let elem of arr2){
+        if(map.has(elem.id)){
+
+            let currElem = map.get(elem.id);
+            map.set(elem.id, {...currElem, ...elem}); // w overwrite
+        }
+        else{
+
+            map.set(elem.id, {...elem});
+        }
+    }
+
+    return Array.from(map.values()).sort((elem1, elem2) => elem1.id - elem2.id);
+
+};
