@@ -676,3 +676,55 @@ var compactObject = function compact(obj) {
 
     return obj;
 };
+
+// (25)
+// 2695. Array Wrapper
+// https://leetcode.com/problems/array-wrapper/?envType=study-plan-v2&envId=30-days-of-javascript
+/**
+ * @param {number[]} nums
+ * @return {void}
+ */
+var ArrayWrapper = function(nums) {
+    
+    this.array = nums; 
+
+};
+
+/**
+ * @return {number}
+ */
+ArrayWrapper.prototype.valueOf = function() {
+    
+    return this.array.length == 0 ? 0 : this.array.reduce((acc, currVal) => acc + currVal); 
+}
+
+/**
+ * @return {string}
+ */
+ArrayWrapper.prototype.toString = function() {
+    
+    let pocketArray = [];
+
+    this.dive(this.array, pocketArray);
+
+    return "[" + pocketArray.toString() + "]";
+    
+}
+
+ArrayWrapper.prototype.dive = function(arr, pocket){
+
+    if(arr.length == 0) {return;}
+
+    for(let elem of arr){
+        
+        Array.isArray(elem) ? this.dive(elem) : pocket.push(elem);
+    }
+}
+
+/**
+ * const obj1 = new ArrayWrapper([1,2]);
+ * const obj2 = new ArrayWrapper([3,4]);
+ * obj1 + obj2; // 10
+ * String(obj1); // "[1,2]"
+ * String(obj2); // "[3,4]"
+ */
