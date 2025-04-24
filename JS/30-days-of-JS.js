@@ -616,3 +616,63 @@ var join = function(arr1, arr2) {
     return Array.from(map.values()).sort((elem1, elem2) => elem1.id - elem2.id);
 
 };
+
+// (24)
+// 2705. Compact Object
+// https://leetcode.com/problems/compact-object/?envType=study-plan-v2&envId=30-days-of-javascript
+
+/**
+ * @param {Object|Array} obj
+ * @return {Object|Array}
+ */
+var compactObject = function compact(obj) {
+  
+    if(Array.isArray(obj)){
+
+        for(let index = obj.length - 1; index >= 0; index--){
+
+            let elem = obj[index];
+            if(typeof elem == "object"){
+                
+                if(elem === null){
+                    obj.splice(index, 1);
+                }
+                else{
+                    compact(elem);
+                }
+            }
+            else{
+
+                if(Boolean(elem) == false){
+
+                    obj.splice(index, 1);
+                }
+            }
+        }
+    }
+    else{
+
+        for(let key in obj){
+
+            let elem = obj[key];
+
+            if(typeof elem == "object"){
+
+                if(elem === null){
+                    delete obj[key];
+                }
+                else{
+                    compact(elem);
+                }
+            }
+            else{
+
+                if(Boolean(elem) == false){
+                    delete obj[key];
+                }
+            }
+        }
+    }
+
+    return obj;
+};
