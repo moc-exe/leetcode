@@ -715,8 +715,7 @@ ArrayWrapper.prototype.dive = function(arr, pocket){
 
     if(arr.length == 0) {return;}
 
-    for(let elem of arr){
-        
+    for(let elem of arr){ 
         Array.isArray(elem) ? this.dive(elem) : pocket.push(elem);
     }
 }
@@ -801,3 +800,58 @@ class Calculator {
         return this.result;
     }
 }
+
+// (27)
+// 2694. Event Emitter
+// https://leetcode.com/problems/event-emitter/?envType=study-plan-v2&envId=30-days-of-javascript
+class EventEmitter {
+    
+
+    constructor(){
+        this.callbackMap = new Map();
+    }
+
+    /**
+     * @param {string} eventName
+     * @param {Function} callback
+     * @return {Object}
+     */
+    subscribe(eventName, callback) {
+        
+        if(this.callbackMap.has(eventName)){
+
+               
+
+        }
+        else{
+
+
+        }
+        return {
+            unsubscribe: () => {
+                
+            }
+        };
+    }
+    
+    /**
+     * @param {string} eventName
+     * @param {Array} args
+     * @return {Array}
+     */
+    emit(eventName, args = []) {
+        
+    }
+}
+
+/**
+ * const emitter = new EventEmitter();
+ *
+ * // Subscribe to the onClick event with onClickCallback
+ * function onClickCallback() { return 99 }
+ * const sub = emitter.subscribe('onClick', onClickCallback);
+ *
+ * emitter.emit('onClick'); // [99]
+ * sub.unsubscribe(); // undefined
+ * emitter.emit('onClick'); // []
+ */
