@@ -708,7 +708,7 @@ ArrayWrapper.prototype.toString = function() {
     this.dive(this.array, pocketArray);
 
     return "[" + pocketArray.toString() + "]";
-    
+
 }
 
 ArrayWrapper.prototype.dive = function(arr, pocket){
@@ -728,3 +728,76 @@ ArrayWrapper.prototype.dive = function(arr, pocket){
  * String(obj1); // "[1,2]"
  * String(obj2); // "[3,4]"
  */
+
+// (26)
+// 2726. Calculator with Method Chaining
+// https://leetcode.com/problems/calculator-with-method-chaining/?envType=study-plan-v2&envId=30-days-of-javascript
+
+
+class Calculator {
+    
+    /** 
+     * @param {number} value
+     */
+    constructor(value) {
+        this.result = value;
+        return this;
+    }
+    
+    /** 
+     * @param {number} value
+     * @return {Calculator}
+     */
+    add(value){
+        this.result += value;
+        return this;
+    }
+    
+    /** 
+     * @param {number} value
+     * @return {Calculator}
+     */
+    subtract(value){
+        this.result -= value;
+        return this; 
+    }
+    
+    /** 
+     * @param {number} value
+     * @return {Calculator}
+     */  
+    multiply(value) {
+        this.result *= value;
+        return this; 
+    }
+    
+    /** 
+     * @param {number} value
+     * @return {Calculator}
+     */
+    divide(value) {
+
+        if(value == 0){
+            throw "Division by zero is not allowed"
+        }
+
+        this.result /= value;
+        return this; 
+    }
+    
+    /** 
+     * @param {number} value
+     * @return {Calculator}
+     */
+    power(value){
+        this.result = Math.pow(this.result, value);
+        return this;
+    }
+    
+    /** 
+     * @return {number}
+     */
+    getResult() {
+        return this.result;
+    }
+}
