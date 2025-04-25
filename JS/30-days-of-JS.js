@@ -686,8 +686,7 @@ var compactObject = function compact(obj) {
  */
 var ArrayWrapper = function(nums) {
     
-    this.array = nums; 
-
+    this.array = nums;
 };
 
 /**
@@ -819,17 +818,31 @@ class EventEmitter {
     subscribe(eventName, callback) {
         
         if(this.callbackMap.has(eventName)){
-
-               
-
+            
+            let currArr = this.callbackMap.get(eventName);
+            currArr.push(callback);
         }
         else{
-
-
+            this.callbackMap.set(eventName, [callback]);
         }
         return {
             unsubscribe: () => {
-                
+
+                let currCallbacks = this.callbackMap.get(eventName);
+
+                if(currCallbacks.length <= 1){
+                    this.callbackMap.delete(eventName)
+                }
+                else{
+                 
+                    for(let index = currCallbacks.length - 1; index >= 0; index--){
+
+                        if(currCallbacks[index] === callback){
+                            currCallbacks.splice(index,1);
+                        }
+                    }
+                }
+                return undefined;
             }
         };
     }
@@ -840,7 +853,20 @@ class EventEmitter {
      * @return {Array}
      */
     emit(eventName, args = []) {
+
+        let outArray = []
+
+        if(this.callbackMap.has(eventName)){
+
+            let functionsToCall = this.callbackMap.get(eventName);
+
+            for(let func of functionsToCall){
+
+                outArray.push(func(...args));
+            }
+        }
         
+        return outArray;
     }
 }
 
