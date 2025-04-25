@@ -881,3 +881,40 @@ class EventEmitter {
  * sub.unsubscribe(); // undefined
  * emitter.emit('onClick'); // []
  */
+
+// (28)
+// 2625. Flatten Deeply Nested Array
+// https://leetcode.com/problems/flatten-deeply-nested-array/description/?envType=study-plan-v2&envId=30-days-of-javascript
+
+/**
+ * @param {Array} arr
+ * @param {number} depth
+ * @return {Array}
+ */
+var flat = function dive(arr, n) {
+
+    // base case
+    if(n <= 0){
+        return arr;
+    }
+
+    let outArray = [];
+
+    for(let elem of arr){
+
+        if(Array.isArray(elem)){
+
+            let flattened_shits = dive(elem, n-1);
+
+            for(let shit of flattened_shits){
+                outArray.push(shit);
+            }
+
+        }
+        else{
+            outArray.push(elem);
+        }
+    }
+
+    return outArray;
+};
