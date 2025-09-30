@@ -4,10 +4,10 @@ import java.util.Queue;
 
 class Router {
 
-
     private final int memoryLimit;
     private Queue<String> queue;
     private HashMap<String, int[]> map;
+    
     
     public Router(int memoryLimit) {
 

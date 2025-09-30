@@ -1,10 +1,10 @@
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.PriorityQueue;
 class FoodRatings {
 
     private HashMap<String, Integer> dishToRatingMapping;
-    private HashMap<String, ArrayList<String>> cuisineToSortedDishesMapping;
+    private HashMap<String, PriorityQueue<String>> cuisineToSortedDishesMapping;
     private HashMap<String, String> dishToCuisineMapping;
     private Comparator<String> dishComparator = (String dish1, String dish2) -> {
         
@@ -33,26 +33,23 @@ class FoodRatings {
             this.dishToCuisineMapping.put(dish, cuisine);
             
             if(!cuisineToSortedDishesMapping.containsKey(cuisine)){
-                this.cuisineToSortedDishesMapping.put(cuisine, new ArrayList<String>());
+                this.cuisineToSortedDishesMapping.put(cuisine, new PriorityQueue<>(dishComparator));
             }
-            ArrayList<String> dishes = this.cuisineToSortedDishesMapping.get(cuisine);
+            PriorityQueue<String> dishes = this.cuisineToSortedDishesMapping.get(cuisine);
             dishes.add(dish);
         }
-
-        for(var arrayList : this.cuisineToSortedDishesMapping.values()){
-            arrayList.sort(dishComparator);
-        }
-
     }
     
     public void changeRating(String food, int newRating) {
         this.dishToRatingMapping.put(food, newRating); // update rating
-        // this.cuisineToSortedDishesMapping.get(dishToCuisineMapping.get(food)).sort(dishComparator); // sort again based on the new rating
+        
+        String cuisine = this.dishToCuisineMapping.get(food);
+        this.cuisineToSortedDishesMapping.get(cuisine).remove(food);
+        this.cuisineToSortedDishesMapping.get(cuisine).add(food);
     }
     
     public String highestRated(String cuisine) {
-        this.cuisineToSortedDishesMapping.get(cuisine).sort(dishComparator);
-        return cuisineToSortedDishesMapping.get(cuisine).getFirst();
+        return cuisineToSortedDishesMapping.get(cuisine).peek();
     }
 }
 
