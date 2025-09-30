@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -9,14 +8,13 @@ class Router {
     private final int memoryLimit;
     private Queue<String> queue;
     private HashMap<String, int[]> map;
-    private ArrayList<Integer> timestamps;
     
     public Router(int memoryLimit) {
 
         this.memoryLimit = memoryLimit;
         this.queue = new LinkedList<>();
         this.map = new HashMap<>();
-        this.timestamps = new ArrayList<>();
+        
     
     }
     
