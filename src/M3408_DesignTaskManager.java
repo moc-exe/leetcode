@@ -1,3 +1,6 @@
+// 3408. Design Task Manager
+// https://leetcode.com/problems/design-task-manager/description/?envType=daily-question&envId=2025-10-05
+
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -36,9 +39,8 @@ public class M3408_DesignTaskManager {
         private Comparator<Task> taskComparator = new Comparator<Task>() {
 
         public int compare(Task t1, Task t2){
-
-            if(t1.priority == t2.priority) return Integer.compare(t1.userID, t2.userID);
-            return Integer.compare(t1.priority, t2.priority);
+            if (t1.priority != t2.priority) return Integer.compare(t2.priority, t1.priority);
+            return Integer.compare(t2.taskID, t1.taskID);
         }
 
         };
@@ -101,14 +103,14 @@ public class M3408_DesignTaskManager {
 
             Task currTask = taskQueue.peek();
 
-            while(!currTask.valid){
+            while(currTask != null && !currTask.valid){
             
                 taskQueue.poll(); // reject
                 currTask = taskQueue.peek();
             
             }
 
-            return taskQueue.poll().userID;
+            return currTask == null ? -1 : taskQueue.poll().userID;
             
         }
     }

@@ -1,3 +1,10 @@
+/*
+    M3100 Water Bottles II
+ * https://leetcode.com/problems/water-bottles-ii/submissions/1790503606/?envType=daily-question&envId=2025-10-03
+ * 
+ * 
+ */
+
 public class M3100_WaterBottlesII{
 
     class Solution {
