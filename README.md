@@ -1,18 +1,17 @@
 ## Getting Started
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Welcome to my leetcode repos
 
 ## Folder Structure
 
-The workspace contains two folders by default, where:
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+- `JS`: contains challenges solved in JavaScript
+- `SQL`: contains problem solutions for SQL problems (mostly SQL50, for which I earned a badge)
+- `pandas`: has problems I solved as a pandas practice for my data analyst internship back in winter 2025.
+- `src`: is for challenges I solved using Java. (simply .java files, no project build, nothing)
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+If you're really interested, my leetcode profile is [here](https://leetcode.com/u/moc-exe/).
 
-## Dependency Management
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+*Well I can't fathom why you would be interested in some silly leetcodes of mine.*
